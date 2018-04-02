@@ -1,18 +1,14 @@
-# TiddlyWiki over NodeJS on CentOS
+# TiddlyWiki over NodeJS on Alpine Linux
 #
-# VERSION               0.1
+# VERSION               0.2
 #
-# The following Dockerfile installs AWS CLI on CentOS
-FROM centos:latest
+FROM alpine:3.7
 EXPOSE 8086
-VOLUME /var/www
-RUN yum -y update && \
-	curl --silent --location https://rpm.nodesource.com/setup_7.x | bash - && \
-	yum -y install nodejs iproute && \
-	npm install -g tiddlywiki 
-	#mkdir --parent /var/www/mynewwiki && \
-	#tiddlywiki /var/www/mynewwiki --init server
-#
-
+VOLUME ["/var/www"]
+RUN apk add --update nodejs iproute2 && \
+	npm install -g tiddlywiki && \
+	tiddlywiki --version && \
+	mkdir -p /var/www/mynewwiki && \
+	tiddlywiki /var/www/mynewwiki --init server
 COPY ./start.sh /root
 ENTRYPOINT ["/root/start.sh"]	
