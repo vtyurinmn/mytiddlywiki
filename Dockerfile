@@ -10,7 +10,8 @@ RUN apk add --update nodejs iproute2 \
     && tiddlywiki --version
 COPY ./start.sh ${WIKI_HOME}/start.sh
 RUN addgroup wiki && adduser -G wiki -h /home/wiki -D wiki \
-    && chmod +x ${WIKI_HOME}/start.sh
+    && chmod +x ${WIKI_HOME}/start.sh \
+    && mkdir -p /var/www && chown -R wiki:wiki /var/www
 USER wiki
 WORKDIR ${WIKI_HOME}
 ENTRYPOINT ["./start.sh"]
